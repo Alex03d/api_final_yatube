@@ -21,6 +21,5 @@ urlpatterns = [
     path('', include(router.urls), name='api-root'),
     # path('api/v1/api-token-auth/', views.obtain_auth_token),
     path('auth/', include('djoser.urls')),
-    # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
 ]
