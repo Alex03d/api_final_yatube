@@ -108,7 +108,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 10
 }
 
 SIMPLE_JWT = {
