@@ -3,6 +3,7 @@ from posts.models import Comment, Group, Post, User, Follow
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
 from .permissions import IsAuthorOrReadOnlyPermission
 from .serializers import (CommentSerializer,
@@ -22,6 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
         IsAuthorOrReadOnlyPermission
     )
     # pagination_class = CustomPagination
+    pagination_class = PageNumberPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
