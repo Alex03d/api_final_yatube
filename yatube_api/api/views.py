@@ -53,7 +53,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     class Meta:
         model = Comment
-        fields = ('all')
+        fields = '__all__'
         read_only_fields = ('author', 'post')
 
 
