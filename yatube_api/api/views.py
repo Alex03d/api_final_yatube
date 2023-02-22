@@ -31,7 +31,7 @@ class PostViewSet(viewsets.ModelViewSet):
         offset = self.request.query_params.get('offset')
 
         if limit and offset:
-            queryset = queryset[int(offset):int(offset)+int(limit)]
+            queryset = queryset[int(offset):int(offset) + int(limit)]
         elif limit:
             queryset = queryset[:int(limit)]
         elif offset:
