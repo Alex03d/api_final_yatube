@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from posts.models import Comment, Group, Post, User, Follow
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
+# from rest_framework.response import Response
 
 from .permissions import IsAuthorOrReadOnlyPermission
 from .serializers import (CommentSerializer,
@@ -66,24 +66,35 @@ class CommentViewSet(viewsets.ModelViewSet):
         read_only_fields = ('author', 'post')
 
 
-class FollowViewSet(viewsets.ViewSet):
-    permission_classes = (IsAuthenticated,)
+# class FollowViewSet(viewsets.ViewSet):
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class = FollowSerializer
+#
+#     def create(self, request):
+#         following_username = request.data.get('following')
+#         if following_username is None:
+#             return Response({'error': 'following username is required'})
+#         following_user = get_object_or_404(User, username=following_username)
+#         user = request.user
+#         if user == following_user:
+#             return Response({'error': 'cannot follow yourself'})
+#         follow, created = Follow.objects.get_or_create(
+#             user=user,
+#             author=following_user
+#         )
+#         if not created:
+#             return Response({'error': 'already following this user'})
+#
+#         serializer = self.serializer_class(follow)
+#         return Response(serializer.data)
+class FollowViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     serializer_class = FollowSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['following__username']
 
-    def create(self, request):
-        following_username = request.data.get('following')
-        if following_username is None:
-            return Response({'error': 'following username is required'})
-        following_user = get_object_or_404(User, username=following_username)
-        user = request.user
-        if user == following_user:
-            return Response({'error': 'cannot follow yourself'})
-        follow, created = Follow.objects.get_or_create(
-            user=user,
-            author=following_user
-        )
-        if not created:
-            return Response({'error': 'already following this user'})
+    def get_queryset(self):
+        return self.request.user.follower.all()
 
-        serializer = self.serializer_class(follow)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
