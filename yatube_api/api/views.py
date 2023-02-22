@@ -3,7 +3,6 @@ from posts.models import Comment, Group, Post, User, Follow
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-# from rest_framework.pagination import LimitOffsetPagination
 
 from .permissions import IsAuthorOrReadOnlyPermission
 from .serializers import (CommentSerializer,
@@ -24,20 +23,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def get_queryset(self):
-        queryset = Post.objects.all()
-        limit = self.request.query_params.get('limit')
-        offset = self.request.query_params.get('offset')
-
-        if limit and offset:
-            queryset = queryset[int(offset):int(offset) + int(limit)]
-        elif limit:
-            queryset = queryset[:int(limit)]
-        elif offset:
-            queryset = queryset[int(offset):]
-
-        return queryset
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
