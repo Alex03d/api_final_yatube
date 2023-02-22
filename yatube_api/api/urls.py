@@ -20,6 +20,6 @@ router.register('api/v1/follow', FollowViewSet, basename='follow')
 urlpatterns = [
     path('', include(router.urls), name='api-root'),
     # path('api/v1/api-token-auth/', views.obtain_auth_token),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
+    # path('auth/', include('djoser.urls')),
+    # path('auth/', include('djoser.urls.jwt')),
 ]
