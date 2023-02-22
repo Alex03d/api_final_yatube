@@ -4,7 +4,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
-from .permissions import IsAuthorOrReadOnlyPermission
+# from .permissions import IsAuthorOrReadOnlyPermission
 from .serializers import (CommentSerializer,
                           GroupSerializer,
                           PostSerializer,
