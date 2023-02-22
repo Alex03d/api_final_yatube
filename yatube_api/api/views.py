@@ -10,7 +10,7 @@ from .serializers import (CommentSerializer,
                           PostSerializer,
                           FollowSerializer
                           )
-from .pagination import CustomPagination
+# from .pagination import CustomPagination
 
 
 class PostViewSet(viewsets.ModelViewSet):
