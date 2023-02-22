@@ -10,6 +10,7 @@ from .serializers import (CommentSerializer,
                           PostSerializer,
                           FollowSerializer
                           )
+from .pagination import CustomPagination
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -20,6 +21,7 @@ class PostViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
         IsAuthorOrReadOnlyPermission
     )
+    pagination_class = CustomPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
