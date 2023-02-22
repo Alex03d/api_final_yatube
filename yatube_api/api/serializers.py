@@ -1,11 +1,10 @@
-import base64  # Модуль с функциями кодирования и декодирования base64
+import base64
 from django.core.files.base import ContentFile
 
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
 from posts.models import Comment, Post, Group, Follow, User
-# from rest_framework.validators import UniqueTogetherValidator
 
 
 class Base64ImageField(serializers.ImageField):
@@ -31,14 +30,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
 
 
-# class CommentSerializer(serializers.ModelSerializer):
-#     author = serializers.SlugRelatedField(
-#         read_only=True, slug_field='username'
-#     )
-#
-#     class Meta:
-#         fields = '__all__'
-#         model = Comment
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True,
@@ -56,12 +47,6 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'slug', 'description')
         model = Group
 
-
-# class FollowSerializer(serializers.ModelSerializer):
-
-    # class Meta:
-    #     model = Follow
-    #     fields = ('id', 'user', 'author',)
 
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
