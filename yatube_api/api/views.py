@@ -53,6 +53,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         IsAuthorOrReadOnlyPermission,
     )
     # permission_classes = (IsAuthorOrReadOnlyPermission, IsAuthenticated,)
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         return Comment.objects.filter(post=self.kwargs.get('post_id'))
