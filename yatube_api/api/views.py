@@ -41,7 +41,8 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthorOrReadOnlyPermission, IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # permission_classes = (IsAuthorOrReadOnlyPermission, IsAuthenticated,)
 
     def get_queryset(self):
         return Comment.objects.filter(post=self.kwargs.get('post_id'))
@@ -49,6 +50,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
+
+    class Meta:
+        model = Comment
+        fields = ('all')
+        read_only_fields = ('author', 'post')
 
 
 class FollowViewSet(viewsets.ViewSet):
