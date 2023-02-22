@@ -25,15 +25,19 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        limit = self.request.query_params.get('limit')
+        offset = self.request.query_params.get('offset')
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        if limit and offset:
+            queryset = queryset[int(offset):int(offset)+int(limit)]
+        elif limit:
+            queryset = queryset[:int(limit)]
+        elif offset:
+            queryset = queryset[int(offset):]
+
+        return queryset
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
