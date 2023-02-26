@@ -45,9 +45,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class FollowViewSet(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
                     viewsets.GenericViewSet
                     ):
     permission_classes = [IsAuthenticated]
